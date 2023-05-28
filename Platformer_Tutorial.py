@@ -17,7 +17,7 @@ FPS = 60
 FramePerSec = pygame.time.Clock()
 
 displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Game")
+pygame.display.set_caption("Yump The Daring Rectangle")
 
 class Player(pygame.sprite.Sprite):
         def __init__(self):
@@ -108,16 +108,16 @@ class platform(pygame.sprite.Sprite):
                 self.rect.left = WIDTH
 
 
-def plat_gen():
+def plat_gen(score):
     while len(platforms) < 7:
         width = random.randrange(50, 100)
         p = platform()
         C = True
-
         while C:
             p = platform()
             p.rect.center = (random.randrange(0, WIDTH - width), random.randrange(-50, 1000))
             C = proximity_check(p, platforms)
+        p.surf.fill((score,0,244))
         platforms.add(p)
         all_sprites.add(p) 
  
@@ -178,7 +178,6 @@ while True:
                 pygame.quit()
                 sys.exit()
 
-
     #Infinite scroll
     if Player_One.rect.top <= HEIGHT / 3:
         Player_One.pos.y += abs(Player_One.vel.y)
@@ -190,8 +189,8 @@ while True:
     #Screen wipe and platform creation            
     displaysurface.fill((0,0,0))
     Player_One.update()
-    plat_gen()
-
+    plat_gen(Player_One.score)
+    
     #Display the score  
     f = pygame.font.SysFont("Verdana", 20)
     g = f.render(str(Player_One.score), True, (123,255,0))
